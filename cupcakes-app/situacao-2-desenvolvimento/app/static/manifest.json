@@ -1,0 +1,9 @@
+{
+  "name": "Glacê & Cia",
+  "short_name": "Glacê & Cia",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FFF3F6",
+  "theme_color": "#A3214F",
+  "icons": [{ "src": "icone.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }]
+}

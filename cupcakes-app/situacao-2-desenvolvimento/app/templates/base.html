@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block titulo %}Cardápio{% endblock %} - Glacê &amp; Cia</title>
+  <meta name="theme-color" content="#A3214F">
+  <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<a class="pular" href="#conteudo">Ir para o conteúdo</a>
+<header class="topo">
+  <a class="marca" href="{{ url_for('loja.index') }}">Glacê &amp; Cia</a>
+  <nav aria-label="Principal">
+    <a href="{{ url_for('loja.index') }}">Cardápio</a>
+    <a href="{{ url_for('loja.carrinho') }}">Carrinho{% if qtd_carrinho %} <span class="contador">{{ qtd_carrinho }}</span>{% endif %}</a>
+    {% if g.user %}
+      <a href="{{ url_for('loja.meus_pedidos') }}">Meus pedidos</a>
+      {% if g.user['is_admin'] %}<a href="{{ url_for('admin.pedidos') }}">Painel</a>{% endif %}
+      <form method="post" action="{{ url_for('auth.logout') }}" class="inline">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <button class="link" type="submit">Sair</button>
+      </form>
+    {% else %}
+      <a href="{{ url_for('auth.login') }}">Entrar</a>
+    {% endif %}
+  </nav>
+</header>
+<main id="conteudo">
+  {% with msgs = get_flashed_messages(with_categories=true) %}
+    {% if msgs %}<div class="avisos" role="status">
+      {% for cat, msg in msgs %}<p class="aviso {{ cat }}">{{ msg }}</p>{% endfor %}
+    </div>{% endif %}
+  {% endwith %}
+  {% block conteudo %}{% endblock %}
+</main>
+<footer class="rodape">Glacê &amp; Cia. Cupcakes gourmet feitos por encomenda.</footer>
+<script>
+  if ("serviceWorker" in navigator) { navigator.serviceWorker.register("{{ url_for('static', filename='sw.js') }}").catch(function () {}); }
+</script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block titulo %}Painel: pedidos{% endblock %}
+{% block conteudo %}
+<h1>Painel da loja</h1>
+<nav class="abas" aria-label="Painel"><a href="{{ url_for('admin.pedidos') }}" aria-current="page">Pedidos</a> <a href="{{ url_for('admin.produtos') }}">Sabores</a></nav>
+{% if not pedidos %}<p class="vazio">Nenhum pedido recebido ainda.</p>{% endif %}
+{% for p in pedidos %}
+<article class="pedido">
+  <header><h2>#{{ p['id'] }} - {{ p['cliente'] }}</h2><span class="status s-{{ p['status']|replace(' ', '-')|lower }}">{{ p['status'] }}</span></header>
+  <ul>{% for i in p['itens'] %}<li>{{ i['quantidade'] }}x {{ i['nome'] }}</li>{% endfor %}</ul>
+  <p>{{ p['total_centavos']|brl }}. Entrega: {{ p['endereco_entrega'] }}</p>
+  <form method="post" action="{{ url_for('admin.atualizar_status', pedido_id=p['id']) }}" class="linha">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <label for="st{{ p['id'] }}" class="sr">Novo status do pedido {{ p['id'] }}</label>
+    <select id="st{{ p['id'] }}" name="status">
+      {% for s in status_lista %}<option {{ 'selected' if s == p['status'] }}>{{ s }}</option>{% endfor %}
+    </select>
+    <button class="btn pequeno" type="submit">Atualizar status</button>
+  </form>
+</article>
+{% endfor %}
+{% endblock %}

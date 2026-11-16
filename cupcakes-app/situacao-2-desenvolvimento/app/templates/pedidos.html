@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block titulo %}Meus pedidos{% endblock %}
+{% block conteudo %}
+<h1>Meus pedidos</h1>
+{% if not pedidos %}<p class="vazio">Você ainda não fez pedidos.</p>{% endif %}
+{% for p in pedidos %}
+<article class="pedido">
+  <header><h2>Pedido #{{ p['id'] }}</h2><span class="status s-{{ p['status']|replace(' ', '-')|lower }}">{{ p['status'] }}</span></header>
+  <ul>{% for i in p['itens'] %}<li>{{ i['quantidade'] }}x {{ i['nome'] }}</li>{% endfor %}</ul>
+  <p>Total: <strong>{{ p['total_centavos']|brl }}</strong>. Entrega em {{ p['endereco_entrega'] }}.</p>
+</article>
+{% endfor %}
+{% endblock %}

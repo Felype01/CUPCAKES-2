@@ -1,0 +1,11 @@
+{% macro cupcake(cor) %}
+<svg class="cupcake" viewBox="0 0 80 80" aria-hidden="true" focusable="false">
+  <path d="M17 44h46l-6 30H23z" fill="#C9894F"/>
+  <path d="M29 46l2 26M40 46v26M51 46l-2 26" stroke="#A66C36" stroke-width="1.6" fill="none"/>
+  <ellipse cx="40" cy="43" rx="28" ry="8" fill="{{ cor }}"/>
+  <ellipse cx="40" cy="32" rx="21" ry="8" fill="{{ cor }}"/>
+  <ellipse cx="40" cy="22" rx="13" ry="7" fill="{{ cor }}"/>
+  <path d="M20 41c8 4 32 4 40 0M27 31c6 3 20 3 26 0" stroke="#fff" stroke-opacity=".35" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <circle cx="40" cy="13" r="4.5" fill="#fff"/>
+</svg>
+{% endmacro %}

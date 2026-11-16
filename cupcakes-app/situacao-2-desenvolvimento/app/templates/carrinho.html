@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block titulo %}Carrinho{% endblock %}
+{% block conteudo %}
+<h1>Seu carrinho</h1>
+{% if not itens %}
+  <p class="vazio">Seu carrinho está vazio. <a href="{{ url_for('loja.index') }}">Escolha um sabor</a>.</p>
+{% else %}
+<ul class="lista">
+  {% for i in itens %}
+  <li>
+    <span><strong>{{ i['quantidade'] }}x</strong> {{ i['produto']['nome'] }}</span>
+    <span>{{ i['subtotal']|brl }}</span>
+    <form method="post" action="{{ url_for('loja.remover', produto_id=i['produto']['id']) }}">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <button class="link" type="submit">Remover</button>
+    </form>
+  </li>
+  {% endfor %}
+</ul>
+<p class="total">Total: <strong>{{ total|brl }}</strong></p>
+<form method="post" action="{{ url_for('loja.finalizar') }}" class="formulario">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <label for="endereco">Endereço de entrega</label>
+  <input id="endereco" name="endereco" required minlength="8" placeholder="Rua, número, bairro">
+  <button class="btn" type="submit">Finalizar pedido</button>
+  {% if not g.user %}<p class="dica">Você vai entrar na sua conta antes de finalizar.</p>{% endif %}
+</form>
+{% endif %}
+{% endblock %}

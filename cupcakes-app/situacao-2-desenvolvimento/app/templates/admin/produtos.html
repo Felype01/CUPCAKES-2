@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block titulo %}Painel: sabores{% endblock %}
+{% block conteudo %}
+<h1>Painel da loja</h1>
+<nav class="abas" aria-label="Painel"><a href="{{ url_for('admin.pedidos') }}">Pedidos</a> <a href="{{ url_for('admin.produtos') }}" aria-current="page">Sabores</a></nav>
+<p><a class="btn" href="{{ url_for('admin.novo_produto') }}">Cadastrar sabor</a></p>
+<ul class="lista">
+  {% for p in produtos %}
+  <li>
+    <span>{{ p['nome'] }} - {{ p['preco_centavos']|brl }} {% if not p['ativo'] %}<em>(fora do cardápio)</em>{% endif %}</span>
+    <a href="{{ url_for('admin.editar_produto', produto_id=p['id']) }}">Editar</a>
+    <form method="post" action="{{ url_for('admin.alternar_produto', produto_id=p['id']) }}">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <button class="link" type="submit">{{ 'Tirar do cardápio' if p['ativo'] else 'Voltar ao cardápio' }}</button>
+    </form>
+  </li>
+  {% endfor %}
+</ul>
+{% endblock %}

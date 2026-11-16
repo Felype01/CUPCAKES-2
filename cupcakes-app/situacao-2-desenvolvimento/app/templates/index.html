@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% from "_macros.html" import cupcake %}
+{% block conteudo %}
+<section class="vitrine">
+  <h1>Escolha seus cupcakes</h1>
+  <p class="sub">Assados hoje, entregues em até 2 horas na sua região.</p>
+</section>
+{% if not produtos %}
+  <p class="vazio">Ainda não há sabores no cardápio. Volte em breve.</p>
+{% endif %}
+<ul class="grade">
+  {% for p in produtos %}
+  <li class="produto">
+    <div class="prato" style="--glace: {{ p['cor_glace'] }}">{{ cupcake(p['cor_glace']) }}</div>
+    <h2>{{ p['nome'] }}</h2>
+    <p>{{ p['descricao'] }}</p>
+    <div class="linha">
+      <strong>{{ p['preco_centavos']|brl }}</strong>
+      <form method="post" action="{{ url_for('loja.adicionar', produto_id=p['id']) }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <button class="btn" type="submit">Adicionar ao carrinho</button>
+      </form>
+    </div>
+  </li>
+  {% endfor %}
+</ul>
+{% endblock %}
